@@ -15,6 +15,7 @@ const Navbar = () => {
         { id: 'Business', label: 'Business', route: '/business' },
         { id: 'Tech', label: 'Tech', route: '/tech' },
         { id: 'Stocks', label: 'Stocks', route: '/stocks' },
+        { id: 'Hindi News', label: 'Hindi News', route: '/hindi-news' },
     ];
 
     const dataInsights = [

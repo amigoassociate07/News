@@ -118,7 +118,6 @@ export const EN_CATEGORY_FEEDS = {
         { name: 'NDTV Profit', url: 'https://feeds.feedburner.com/ndtvprofit-latest' },
         { name: 'Business Today Markets', url: 'https://www.businesstoday.in/rss/market' },
         { name: 'The Hindu BusinessLine Markets', url: 'https://www.thehindubusinessline.com/markets/?service=rss' },
-        { name: 'Yahoo Finance India', url: 'https://finance.yahoo.com/news/rssindex' },
         { name: 'Investing.com', url: 'https://news.google.com/rss/search?q=investing.com+stock+market+news&hl=en-US&gl=US&ceid=US:en' },
         { name: 'MarketWatch', url: 'http://feeds.marketwatch.com/marketwatch/topstories/' }
     ]
@@ -174,6 +173,14 @@ export const HI_CATEGORY_FEEDS = {
         { name: 'Moneycontrol Hindi', url: 'https://hindi.moneycontrol.com/rss/market-news.xml' },
         { name: 'ET Swadesh', url: 'https://hindi.etnownews.com/feeds/gns-etn-hindi-markets' },
         { name: 'Zee Business', url: 'https://www.zeebiz.com/rss' }
+    ],
+    'Hindi News': [
+        { name: 'India Today National', url: 'https://news.google.com/rss/search?q=site:indiatodayhindi.com+national&hl=hi&gl=IN&ceid=IN:hi', location: 'India' },
+        { name: 'News18 World', url: 'https://hindi.news18.com/commonfeeds/v1/hin/rss/world.xml', location: 'India' },
+        { name: 'News18 Business', url: 'https://hindi.news18.com/commonfeeds/v1/hin/rss/business.xml', location: 'India' },
+        { name: 'Live Hindustan Biz', url: 'https://api.livehindustan.com/feeds/rss/business/rssfeed.xml', location: 'India' },
+        { name: 'Economic Times HI', url: 'https://news.google.com/rss/search?q=site:hindi.economictimes.com&hl=hi&gl=IN&ceid=IN:hi', location: 'India' },
+        { name: 'Dainik Bhaskar Biz', url: 'https://news.google.com/rss/search?q=site:bhaskar.com+business&hl=hi&gl=IN&ceid=IN:hi', location: 'India' }
     ]
 };
 
@@ -228,6 +235,9 @@ export const CATEGORY_KEYWORDS = {
         'trading', 'indices', 'bull', 'bear', 'portfolio', 'equity', 'listing',
         'bse', 'nse', 'earnings', 'brokerage',
         'स्टॉक', 'मार्केट', 'शेयर', 'निफ्टी', 'सेंसेक्स', 'आईपीओ'
+    ],
+    'Hindi News': [
+        'हिंदी न्यूज़', 'अडानी', 'रिलायंस', 'टाटा', 'मुनाफा', 'निवेश', 'व्यापार', 'अर्थव्यवस्था', 'शेयर', 'मार्केट', 'चुनाव', 'राजनीति', 'विश्व', 'भारत', 'ताज़ा', 'समाचार', 'खबर', 'वित्त', 'बाजार'
     ]
 };
 
@@ -378,6 +388,12 @@ export const CATEGORY_META = {
         subtitle: 'The absolute latest updates from across the globe, consolidated for your convenience.',
         gradient: 'from-orange-400 via-red-400 to-rose-500',
         defaultImage: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=800'
+    },
+    'Hindi News': {
+        route: '/hindi-news',
+        subtitle: 'ताज़ा हिंदी समाचार — व्यापार, अर्थव्यवस्था, और वैश्विक घटनाक्रमों का सटीक विश्लेषण।',
+        gradient: 'from-orange-500 via-red-500 to-amber-500',
+        defaultImage: 'https://images.unsplash.com/photo-1585829365234-781bd9895c68?auto=format&fit=crop&q=80&w=800'
     }
 };
 
@@ -580,7 +596,7 @@ export const isArticleRelevant = (article, category) => {
     // If it is not Stocks/Business/Tech AND not an aggregator feed, trust it as relevant.
     // Economy, Geopolitical, and Global Market articles from curated sources are trusted 
     // to prevent empty categories after latest API changes.
-    const trustedCategories = ['Economy', 'Geopolitical', 'Global Market'];
+    const trustedCategories = ['Economy', 'Geopolitical', 'Global Market', 'Hindi News'];
     if (trustedCategories.includes(category)) return true;
     if (!isAggregator && !['Stocks', 'Business', 'Tech'].includes(category)) return true;
 

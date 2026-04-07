@@ -45,7 +45,8 @@ const Home = () => {
 
             const isHindi = false;
             const currentFeeds = isHindi ? HI_CATEGORY_FEEDS : EN_CATEGORY_FEEDS;
-            const allCats = Object.keys(currentFeeds);
+            // Include Hindi News on the landing page even if the primary language is English
+            const allCats = [...Object.keys(currentFeeds), 'Hindi News'];
 
             // 4-second timeout per proxy
             const withTimeout = (promise, ms = 4000) =>
@@ -88,7 +89,8 @@ const Home = () => {
 
             // ── Per-category fetch (Sequential to avoid rate-limiting) ──────────────
             for (const cat of allCats) {
-                const feeds = currentFeeds[cat] || [];
+                const feeds = (cat === 'Hindi News' ? HI_CATEGORY_FEEDS[cat] : currentFeeds[cat]) || [];
+                const catIsHindi = isHindi || cat === 'Hindi News';
                 let catArticles = [];
 
                 const feedPromises = feeds.map(async (feed) => {
@@ -100,7 +102,7 @@ const Home = () => {
                     }
 
                     const articles = result?.items
-                        ?.map(item => normArticle(item, feed, result, isHindi, cat))
+                        ?.map(item => normArticle(item, feed, result, catIsHindi, cat))
                         .filter(a => isArticleRelevant(a, cat) && !isBlocked(a)) || [];
 
                     if (articles.length === 0) return;
@@ -167,10 +169,10 @@ const Home = () => {
                         .filter(item => item.category === cat)
                         .map(item => ({
                             ...item,
-                            title: isHindi ? item.title_hi || item.title : item.title,
+                            title: (isHindi || cat === 'Hindi News') ? item.title_hi || item.title : item.title,
                             imageUrl: item.imageUrl || CATEGORY_META[cat]?.defaultImage,
-                            shortDescription: isHindi ? item.shortDescription_hi || item.shortDescription : item.shortDescription,
-                            fullContent: isHindi ? item.fullContent_hi || item.fullContent : item.fullContent,
+                            shortDescription: (isHindi || cat === 'Hindi News') ? item.shortDescription_hi || item.shortDescription : item.shortDescription,
+                            fullContent: (isHindi || cat === 'Hindi News') ? item.fullContent_hi || item.fullContent : item.fullContent,
                             isFallback: true
                         }));
                     if (fallback.length > 0) {
@@ -250,7 +252,7 @@ const Home = () => {
     }
 
     const isHindi = false;
-    const fixedOrder = Object.keys(isHindi ? HI_CATEGORY_FEEDS : EN_CATEGORY_FEEDS);
+    const fixedOrder = [...Object.keys(isHindi ? HI_CATEGORY_FEEDS : EN_CATEGORY_FEEDS), 'Hindi News'];
     const allCategories = fixedOrder;
     const categoriesToRender = categoryFilter
         ? allCategories.filter(cat => cat.toLowerCase() === categoryFilter.toLowerCase())
@@ -319,7 +321,7 @@ const Home = () => {
                                         Tech: '/tech', Business: '/business',
                                         Economy: '/economy', Geopolitical: '/geopolitics',
                                         Stocks: '/stocks', 'US Economy': '/us-economy', 'Euro Economy': '/euro-economy',
-                                        'Global Market': '/global-market'
+                                        'Global Market': '/global-market', 'Hindi News': '/hindi-news'
                                     };
                                     const route = routeMap[cat];
                                     return route ? (

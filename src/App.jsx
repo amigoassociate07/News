@@ -21,6 +21,7 @@ function App() {
           <Route path="/latest" element={<LatestNews />} />
           <Route path="/news/:id" element={<ArticlePage />} />
           <Route path="/stocks" element={<Stocks />} />
+          <Route path="/hindi-news" element={<CategoryPage category="Hindi News" />} />
           <Route path="/tech" element={<CategoryPage category="Tech" />} />
           <Route path="/business" element={<CategoryPage category="Business" />} />
           <Route path="/global-market" element={<CategoryPage category="Global Market" />} />

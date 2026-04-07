@@ -50,7 +50,7 @@ const newsCache = {};
 const CategoryPage = ({ category }) => {
 
     const currentLang = 'en';
-    const isHindi = currentLang.startsWith('hi');
+    const isHindi = currentLang.startsWith('hi') || category === 'Hindi News';
     const langCode = isHindi ? 'hi' : 'en';
     const initialCacheKey = `${category}-${langCode}`;
     const cached = newsCache[initialCacheKey] || [];
