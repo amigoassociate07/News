@@ -60,20 +60,29 @@ const Home = () => {
             const getShuffledProxies = () => {
                 const PROXY_STRATEGIES = [
                     async (u) => {
+                        // AllOrigins is usually quite stable but returns JSON
+                        const res = await withTimeout(fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(u)}&t=${Date.now()}`, { cache: 'no-store' }));
+                        const json = await res.json();
+                        const items = parseXML(json.contents || '');
+                        return items.length > 0 ? { items, isJson: false } : null;
+                    },
+                    async (u) => {
+                        // rss2json is good but heavily rate-limited (429)
                         const res = await withTimeout(fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(u)}`));
                         const json = await res.json();
                         return json.status === 'ok' && json.items?.length > 0 ? { items: json.items, isJson: true } : null;
                     },
                     async (u) => {
-                        const res = await withTimeout(fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`, { cache: 'no-store' }));
+                        // thingproxy is a good free fallback
+                        const res = await withTimeout(fetch(`https://thingproxy.freeboard.io/fetch/${encodeURIComponent(u)}`));
                         const xml = await res.text();
                         const items = parseXML(xml);
                         return items.length > 0 ? { items, isJson: false } : null;
                     },
                     async (u) => {
-                        const res = await withTimeout(fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(u)}&t=${Date.now()}`, { cache: 'no-store' }));
-                        const json = await res.json();
-                        const items = parseXML(json.contents || '');
+                        const res = await withTimeout(fetch(`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`, { cache: 'no-store' }));
+                        const xml = await res.text();
+                        const items = parseXML(xml);
                         return items.length > 0 ? { items, isJson: false } : null;
                     },
                     async (u) => {
